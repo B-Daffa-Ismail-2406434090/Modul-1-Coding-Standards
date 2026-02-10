@@ -9,6 +9,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
@@ -21,36 +22,37 @@ class HomePageFunctionalTest {
      */
     @LocalServerPort
     private int serverPort;
+
     /**
      * The base URL for testing. Default to {@code http://localhost}.
      */
     @Value("${app.baseUrl:http://localhost}")
     private String testBaseUrl;
+
     private String baseUrl;
 
     @BeforeEach
     void setupTest() {
-        baseUrl =String.format("%s: %d",testBaseUrl,serverPort);
+        baseUrl = String.format("%s:%d", testBaseUrl, serverPort);
     }
-
-
 
     @Test
     void pageTitle_isCorrect(ChromeDriver driver) throws Exception {
-// Exercise
-        driver.get(baseUrl);
+        // Exercise
+        driver.get(baseUrl + "/product/list");
         String pageTitle = driver.getTitle();
-// Verify
-        assertEquals("ADV Shop", pageTitle);
+
+        // Verify
+        assertEquals("Product List", pageTitle);
     }
 
     @Test
     void welcomeMessage_homePage_isCorrect(ChromeDriver driver) throws Exception {
-// Exercise
-        driver.get(baseUrl);
+        // Exercise
+        driver.get(baseUrl + "/product/list");
         String welcomeMessage = driver.findElement(By.tagName("h3"))
                 .getText();
-// Verify
+        // Verify
         assertEquals("Welcome", welcomeMessage);
     }
 }
